@@ -7,39 +7,44 @@ from maths import Vector2D
 class MoveComponent(Component):
     def __init__(self, owner: Actor, update_order: int = 10) -> None:
         super().__init__(owner, update_order)
-        # For simple movement (rad/sec and units/sec)
+        # For simple rotation (rad/sec)
         self._m_rotation_speed: float = 0.0
-        self._m_forward_speed: float = 0.0
 
-        # TODO For Newtonian movement
+        # For Newtonian movement
+        self._m_mass: float = 1.0
+        self._m_sum_forces: Vector2D = Vector2D(0.0, 0.0)
+        self._m_velocity: Vector2D = Vector2D(0.0, 0.0)
 
     # Implements
     def update(self, dt: float) -> None:
         if check_near_zero(self._m_rotation_speed) == False:
+            # Integration of rotation (rot = speed / time)
             rot: float = self._m_owner.get_rotation()
-
-            # Numeric integration of rotation (rot = speed / time)
             rot = rot + (self._m_rotation_speed * dt)
-
             self._m_owner.set_rotation(rot)
-        if check_near_zero(self._m_forward_speed) == False:
-            pos: Vector2D = self._m_owner.get_position()
 
-            # Numeric integration of position (pos = forward (speed / time))
-            pos = pos + (self._m_owner.get_forward()
-                         * self._m_forward_speed * dt)
+        ## Velocity Verlet Integration: start ##
+        pos: Vector2D = self._m_owner.get_position()
+        # Compute acceleration (F = m * a)
+        acceleration: Vector2D = self._m_sum_forces * (1 / self._m_mass)
+        # Reset every frame
+        self._m_sum_forces.set(0.0, 0.0)
+        # Compute delta-v & delta-p (dv=a*dt, dp=v/2*dt)
+        old_velocity: Vector2D = self._m_velocity
+        self._m_velocity = self._m_velocity + acceleration * dt
+        pos = pos + (old_velocity + self._m_velocity) * 0.5 * dt
+        ## Velocity Verlet Integration: end ##
 
-            # Screen wrapping (for Asteroid only, remove for generic MoveComponent)
-            if pos.x < 0.0:
-                pos.x = 1022.0
-            elif pos.x > 1024.0:
-                pos.x = 2.0
-            if pos.y < 0.0:
-                pos.y = 766.0
-            elif pos.y > 768.0:
-                pos.y = 2.0
-
-            self._m_owner.set_position(pos)
+        # Screen wrapping (for Asteroid only, remove for generic MoveComponent)
+        if pos.x < -50.0:
+            pos.x = 1100.0
+        elif pos.x > 1100.0:
+            pos.x = -50.0
+        if pos.y < -50.0:
+            pos.y = 800.0
+        elif pos.y > 800.0:
+            pos.y = -50.0
+        self._m_owner.set_position(pos)
 
     def get_rotation_speed(self) -> float:
         return self._m_rotation_speed
@@ -52,3 +57,9 @@ class MoveComponent(Component):
 
     def set_forward_speed(self, speed: float) -> None:
         self._m_forward_speed = speed
+
+    def set_mass(self, mass: float) -> None:
+        self._m_mass = mass
+
+    def add_force(self, force: Vector2D) -> None:
+        self._m_sum_forces = self._m_sum_forces + force

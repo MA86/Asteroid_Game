@@ -31,7 +31,7 @@ class SpriteComponent(Component):
             rect.x = int(self._m_owner.get_position().x - rect.w / 2)
             rect.y = int(self._m_owner.get_position().y - rect.h / 2)
 
-            # Draw (convert rad to deg, and clockwise to counter)
+            # Draw (convert rad to deg, and clockwise to counter(huh??))
             sdl2.SDL_RenderCopyEx(renderer,
                                   self.m_texture,
                                   None,

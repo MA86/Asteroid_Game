@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import List         # For hinting
 from enum import Enum           # For enum
+import ctypes
 from maths import Vector2D
 import maths
 
@@ -52,6 +53,19 @@ class Actor:
         # Implementable
         pass
 
+    def input(self, keyb_state: ctypes.Array) -> None:
+        if self._m_state == State.eALIVE:
+            self.input_components(keyb_state)
+            self.input_actor(keyb_state)
+
+    def input_components(self, keyb_state: ctypes.Array) -> None:
+        for c in self._m_components:
+            c.input(keyb_state)
+
+    def input_actor(self, keyb_state: ctypes.Array) -> None:
+        # Implementable
+        pass
+
     def add_component(self, component: Component) -> None:
         # Add based on update order
         index = 0
@@ -84,7 +98,8 @@ class Actor:
         self._m_rotation = rotation
 
     def get_forward(self) -> Vector2D:
-        return Vector2D(maths.cos(self._m_rotation), -maths.sin(self._m_rotation))
+        # Note: equation (unit circle) returns normalized vector
+        return Vector2D(maths.cos(self._m_rotation), maths.sin(self._m_rotation))
 
     def get_state(self) -> State:
         return self._m_state

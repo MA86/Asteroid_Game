@@ -1,4 +1,5 @@
 from __future__ import annotations
+import ctypes
 
 
 class Component:
@@ -15,6 +16,10 @@ class Component:
         self._m_owner.remove_component(self)
 
     def update(self, dt: float) -> None:
+        # Implementable
+        pass
+
+    def input(self, keyb_state: ctypes.Array) -> None:
         # Implementable
         pass
 

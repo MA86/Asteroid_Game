@@ -20,9 +20,13 @@ class Asteroid(Actor):
 
         # Add components
         sc = SpriteComponent(self)
-        sc.set_texture(self._m_game.get_texture("assets/asteroid.png"))
+        sc.set_texture(self._m_game.get_texture(b"assets/asteroid.png"))
         mc = MoveComponent(self)
         mc.set_forward_speed(150.0)
+        mc.set_rotation_speed(0.5)
+        mc.set_mass(1)
+        mc.add_force(Random.get_vector(
+            Vector2D(0.0, 0.0), Vector2D(1024.0, 768.0)))
 
     def get_circle(self) -> CircleComponent:
         return self._m_circle

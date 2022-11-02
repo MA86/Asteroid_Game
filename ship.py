@@ -2,50 +2,34 @@ from __future__ import annotations
 import ctypes
 import sdl2
 from actor import Actor
-from anim_sprite_component import AnimSpriteComponent
+from sprite_component import SpriteComponent
+from input_component import InputComponent
+from maths import TWO_PI
 
 
 class Ship(Actor):
     def __init__(self, game: Game) -> None:
         super().__init__(game)
-        self._m_right_speed = 0.0
-        self._m_down_speed = 0.0
 
-        # Create a component for Ship
-        asc = AnimSpriteComponent(self)
-        anim_textures = [game.get_texture(b"assets/ship01.png"),
-                         game.get_texture(b"assets/ship02.png"),
-                         game.get_texture(b"assets/ship03.png"),
-                         game.get_texture(b"assets/ship04.png")]
-        asc.set_anim_textures(anim_textures)
+        self._m_laser_cool_down: float = 0.0
 
+        # Create components for Ship
+        sc = SpriteComponent(self, 150)
+        sc.set_texture(game.get_texture(b"assets/ship.png"))
+        ic = InputComponent(self)
+        ic.set_forward_key(sdl2.SDL_SCANCODE_W)
+        ic.set_back_key(sdl2.SDL_SCANCODE_S)
+        ic.set_clockwise_key(sdl2.SDL_SCANCODE_D)
+        ic.set_counter_clockwise_key(sdl2.SDL_SCANCODE_A)
+        ic.set_max_forward_speed(300.0)
+        ic.set_max_rotation_speed(TWO_PI)
+
+    # Implements
     def update_actor(self, dt: float) -> None:
-        # Update position
-        position = self._m_position     # TODO
-        position.x += self._m_right_speed * dt
-        position.y += self._m_down_speed * dt
+        # TODO set laser cool down here
+        pass
 
-        # Restrict position to left of screen
-        if position.x < 25.0:
-            position.x = 25.0
-        elif position.x > 500.0:
-            position.x = 500.0
-        if position.y < 25.0:
-            position.y = 25.0
-        elif position.y > 743.0:
-            position.y = 743.0
-        # Set position
-        self._m_position = position  # TODO
-
-    def process_keyboard(self, keyb_state: ctypes.Array) -> None:
-        self._m_right_speed = 0.0
-        self._m_down_speed = 0.0
-
-        if keyb_state[sdl2.SDL_SCANCODE_D]:
-            self._m_right_speed += 250.0
-        if keyb_state[sdl2.SDL_SCANCODE_A]:
-            self._m_right_speed -= 250.0
-        if keyb_state[sdl2.SDL_SCANCODE_S]:
-            self._m_down_speed += 300.0
-        if keyb_state[sdl2.SDL_SCANCODE_W]:
-            self._m_down_speed -= 300.0
+    # Implements
+    def input_actor(self, keyb_state: ctypes.Array) -> None:
+        # TODO fire laser here
+        pass

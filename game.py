@@ -61,10 +61,10 @@ class Game:
             sdl2.SDL_Log("Image failed: ", sdl2.SDL_GetError())
             return False
 
-        self._load_data()
-
         # Initiate random generator class
-        Random.init()
+        Random.init(4)
+
+        self._load_data()
 
         # Initial time
         self._m_time_then = sdl2.SDL_GetTicks()
@@ -95,10 +95,14 @@ class Game:
         # Get states-queue
         keyb_state = sdl2.SDL_GetKeyboardState(None)
 
-        # Check states-queue
+        # Check states-queue for Game
         if keyb_state[sdl2.SDL_SCANCODE_ESCAPE]:
             self._m_running = False
-        self._m_ship.process_keyboard(keyb_state)
+        # Check states-queue for Actors
+        self._m_updating_actors = True
+        for actor in self._m_actors:
+            actor.input(keyb_state)
+        self._m_updating_actors = False
 
     def _process_update(self) -> None:
         # Wait 16ms (frame limiting)

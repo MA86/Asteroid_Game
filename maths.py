@@ -62,6 +62,10 @@ class Vector2D:
         self.x: float = x
         self.y: float = y
 
+    def set(self, x: float, y: float) -> None:
+        self.x = x
+        self.y = y
+
     def __add__(self, other: Vector2D) -> Vector2D:
         return Vector2D(self.x + other.x, self.y + other.y)
 

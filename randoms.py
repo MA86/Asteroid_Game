@@ -9,12 +9,11 @@ class Random:
     init() Creates an instance of random.Random class. 
     Basically, a wrapper for random.Random members. 
     """
-    _m_seed: int = None
     _m_random: random.Random = None
 
     @classmethod
-    def init(cls) -> None:
-        cls._m_random = random.Random(cls._m_seed)
+    def init(cls, seed: int) -> None:
+        cls._m_random = random.Random(seed)
 
     @classmethod
     def get_float(cls) -> float:
