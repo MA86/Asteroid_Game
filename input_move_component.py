@@ -1,14 +1,17 @@
 from __future__ import annotations
 from move_component import MoveComponent
+from maths import Vector2D
 import ctypes
 
 
-class InputComponent(MoveComponent):
+class InputMoveComponent(MoveComponent):
+    """ CONTROLS MOVEMENT BASED ON KEYS """
+
     def __init__(self, owner: Actor) -> None:
         super().__init__(owner)
 
         # Max forward/rotation speeds
-        self._m_max_forward_speed: float = None
+        self._m_forward_speed: float = 0.0
         self._m_max_rotation_speed: float = None
 
         # Keys for forward/rotation movements
@@ -19,14 +22,15 @@ class InputComponent(MoveComponent):
 
     # Implements
     def input(self, keyb_state: ctypes.Array) -> None:
-        # Control speed variables of MoveComponent based on keys:
+        # Control MoveComponent based on keys:
         # Forward/back movement
-        forward_speed = 0.0
         if keyb_state[self._m_forward_key]:
-            forward_speed += self._m_max_forward_speed
+            self.add_force(self._m_owner.get_forward()
+                           * self._m_forward_speed)
         if keyb_state[self._m_back_key]:
-            forward_speed -= self._m_max_forward_speed
-        self.set_forward_speed(forward_speed)
+            self.add_force(self._m_owner.get_forward()
+                           * -self._m_forward_speed)
+
         # Rotation movement
         rotation_speed = 0.0
         if keyb_state[self._m_clockwise_key]:
@@ -35,10 +39,10 @@ class InputComponent(MoveComponent):
             rotation_speed -= self._m_max_rotation_speed
         self.set_rotation_speed(rotation_speed)
 
-    def get_max_forward(self) -> float:
-        return self._m_max_forward_speed
+    def get_forward_speed(self) -> float:
+        return self._m_forward_speed
 
-    def get_max_rotation(self) -> float:
+    def get_max_rotation_speed(self) -> float:
         return self._m_max_rotation_speed
 
     def get_forward_key(self) -> int:
@@ -53,8 +57,8 @@ class InputComponent(MoveComponent):
     def get_counter_clockwise_key(self) -> int:
         return self._m_counter_clockwise_key
 
-    def set_max_forward_speed(self, speed: float) -> None:
-        self._m_max_forward_speed = speed
+    def set_forward_speed(self, speed: float) -> None:
+        self._m_forward_speed = speed
 
     def set_max_rotation_speed(self, speed: float) -> None:
         self._m_max_rotation_speed = speed

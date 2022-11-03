@@ -2,7 +2,7 @@ from __future__ import annotations
 from actor import Actor
 from sprite_component import SpriteComponent
 from move_component import MoveComponent
-from maths import Vector2D, TWO_PI
+from maths import Vector2D, TWO_PI, PI_OVER_TWO
 from randoms import Random
 
 
@@ -22,11 +22,9 @@ class Asteroid(Actor):
         sc = SpriteComponent(self)
         sc.set_texture(self._m_game.get_texture(b"assets/asteroid.png"))
         mc = MoveComponent(self)
-        mc.set_forward_speed(150.0)
-        mc.set_rotation_speed(0.5)
+        mc.set_rotation_speed(Random.get_float_range(0.0, PI_OVER_TWO))
         mc.set_mass(1)
-        mc.add_force(Random.get_vector(
-            Vector2D(0.0, 0.0), Vector2D(1024.0, 768.0)))
+        mc.add_force(self.get_forward() * 3000.0)
 
     def get_circle(self) -> CircleComponent:
         return self._m_circle

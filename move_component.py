@@ -7,6 +7,7 @@ from maths import Vector2D
 class MoveComponent(Component):
     def __init__(self, owner: Actor, update_order: int = 10) -> None:
         super().__init__(owner, update_order)
+
         # For simple rotation (rad/sec)
         self._m_rotation_speed: float = 0.0
 
@@ -17,17 +18,16 @@ class MoveComponent(Component):
 
     # Implements
     def update(self, dt: float) -> None:
-        if check_near_zero(self._m_rotation_speed) == False:
-            # Integration of rotation (rot = speed / time)
-            rot: float = self._m_owner.get_rotation()
-            rot = rot + (self._m_rotation_speed * dt)
-            self._m_owner.set_rotation(rot)
+        # Simple rotation
+        rot: float = self._m_owner.get_rotation()
+        rot = rot + (self._m_rotation_speed * dt)
+        self._m_owner.set_rotation(rot)
 
         ## Velocity Verlet Integration: start ##
         pos: Vector2D = self._m_owner.get_position()
         # Compute acceleration (F = m * a)
         acceleration: Vector2D = self._m_sum_forces * (1 / self._m_mass)
-        # Reset every frame
+        # Then reset every frame
         self._m_sum_forces.set(0.0, 0.0)
         # Compute delta-v & delta-p (dv=a*dt, dp=v/2*dt)
         old_velocity: Vector2D = self._m_velocity
@@ -46,20 +46,17 @@ class MoveComponent(Component):
             pos.y = -50.0
         self._m_owner.set_position(pos)
 
+    def add_force(self, force: Vector2D) -> None:
+        self._m_sum_forces = self._m_sum_forces + force
+
     def get_rotation_speed(self) -> float:
         return self._m_rotation_speed
-
-    def get_forward_speed(self) -> float:
-        return self._m_forward_speed
 
     def set_rotation_speed(self, speed: float) -> None:
         self._m_rotation_speed = speed
 
-    def set_forward_speed(self, speed: float) -> None:
-        self._m_forward_speed = speed
+    def get_mass(self) -> None:
+        return self._m_mass
 
     def set_mass(self, mass: float) -> None:
         self._m_mass = mass
-
-    def add_force(self, force: Vector2D) -> None:
-        self._m_sum_forces = self._m_sum_forces + force

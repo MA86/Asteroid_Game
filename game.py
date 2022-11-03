@@ -9,6 +9,7 @@ from asteroid import Asteroid
 from maths import Vector2D
 from randoms import Random
 import maths
+import ctypes
 
 
 class Game:
@@ -23,9 +24,9 @@ class Game:
         self._m_pending_actors = []
         self._m_sprites = []
 
-        self._m_updating_actors = False
-        self._m_running = True
-        self._m_time_then = 0.0
+        self._m_updating_actors: bool = False
+        self._m_running: bool = True
+        self._m_time_then: float = 0.0
 
         # Game-specific objects (refs and lists)
         self._m_ship: "Ship" = None
@@ -108,15 +109,13 @@ class Game:
         # Wait 16ms (frame limiting)
         sdl2.SDL_Delay(16)
 
-        time_now = sdl2.SDL_GetTicks()
-        delta_time = (time_now - self._m_time_then) / 1000.0
-
+        time_now: ctypes.c_uint32 = sdl2.SDL_GetTicks()
+        delta_time: float = (time_now - self._m_time_then) / 1000.0
         # Clamp max delta time (for debugging)
         if delta_time > 0.05:
             delta_time = 0.05
-
         # Time now is time then
-        self._m_time_then = sdl2.SDL_GetTicks()
+        self._m_time_then: ctypes.c_uint32 = sdl2.SDL_GetTicks()
 
         # Update actors
         self._m_updating_actors = True
