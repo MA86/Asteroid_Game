@@ -80,4 +80,8 @@ class Vector2D:
         else:
             raise NotImplementedError()
 
+    # Alternative to length()
+    def length_sq(self) -> float:
+        return (self.x * self.x + self.y * self.y)
+
     # TODO add vector operations

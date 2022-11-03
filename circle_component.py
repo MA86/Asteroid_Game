@@ -10,8 +10,14 @@ class CircleComponent(Component):
 
     def intersect(self, circle_a: CircleComponent, circle_b: CircleComponent) -> bool:
         # Compute distance squared
-        dist: Vector2D = circle_a.get_center() - circle_b.get_center()
-        # TODO
+        diff: Vector2D = circle_a.get_center() - circle_b.get_center()
+        dist_sq: float = diff.length_sq()
+
+        # Compute sum of radii squared
+        radii: float = circle_a.get_radius() + circle_b.get_radius()
+        radii_sq = radii * radii
+
+        return dist_sq <= radii_sq
 
     def get_center(self) -> float:
         pass
