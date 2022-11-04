@@ -4,8 +4,8 @@ import sdl2
 from actor import Actor
 from sprite_component import SpriteComponent
 from input_move_component import InputMoveComponent
+from laser import Laser
 from maths import PI
-from randoms import Random
 
 
 class Ship(Actor):
@@ -29,10 +29,16 @@ class Ship(Actor):
 
     # Implements
     def update_actor(self, dt: float) -> None:
-        # TODO set laser cool down here
-        pass
+        self._m_laser_cool_down -= dt
 
     # Implements
     def input_actor(self, keyb_state: ctypes.Array) -> None:
-        # TODO fire laser here
-        pass
+        if keyb_state[sdl2.SDL_SCANCODE_SPACE] and self._m_laser_cool_down <= 0.0:
+            # Create Laser at Ship's pos/rot
+            laser = Laser(self.get_game())
+            laser.set_position(self.get_position())
+            laser.set_rotation(self.get_rotation())
+            laser.apply_force(self.get_forward() * 5000.0)
+
+            # Reset laser cooldown (1s)
+            self._m_laser_cool_down = 1.0

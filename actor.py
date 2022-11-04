@@ -36,9 +36,9 @@ class Actor:
     def delete(self) -> None:
         # If container gone -> contained gone! [Composition]
         self._m_game.remove_actor(self)
-        while len(self._m_components) != 0:
-            c = self._m_components.pop()
+        for c in list(self._m_components):
             c.delete()
+        print(len(self._m_components))
 
     def update(self, dt: float) -> None:
         if self._m_state == State.eALIVE:

@@ -220,10 +220,10 @@ class Game:
 
     # Game-specific (add/remove asteroid)
     def add_asteroid(self, asteroid: Asteroid) -> None:
-        raise NotImplementedError()
+        self._m_asteroids.append(asteroid)
 
     def remove_asteroid(self, asteroid: Asteroid) -> None:
-        raise NotImplementedError()
+        self._m_asteroids.remove(asteroid)
 
     def get_asteroids(self) -> List[Asteroid]:
         return self._m_asteroids

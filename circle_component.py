@@ -19,11 +19,11 @@ class CircleComponent(Component):
 
         return dist_sq <= radii_sq
 
-    def get_center(self) -> float:
-        pass
+    def get_center(self) -> Vector2D:
+        return self._m_owner.get_position()
 
     def get_radius(self) -> float:
-        return self._m_radius
+        return self._m_owner.get_scale() * self._m_radius
 
     def set_radius(self, radius: float) -> None:
         self._m_radius = radius
