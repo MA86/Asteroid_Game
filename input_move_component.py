@@ -27,9 +27,14 @@ class InputMoveComponent(MoveComponent):
         if keyb_state[self._m_forward_key]:
             self.add_force(self._m_owner.get_forward()
                            * self._m_forward_speed)
+            # Forward texture
+            self._m_owner.change_texture_to("forward")
         if keyb_state[self._m_back_key]:
             self.add_force(self._m_owner.get_forward()
                            * -self._m_forward_speed)
+
+            # Backward texture
+            self._m_owner.change_texture_to("backward")
 
         # Rotation movement
         rotation_speed = 0.0

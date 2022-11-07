@@ -38,7 +38,6 @@ class Actor:
         self._m_game.remove_actor(self)
         for c in list(self._m_components):
             c.delete()
-        print(len(self._m_components))
 
     def update(self, dt: float) -> None:
         if self._m_state == State.eALIVE:

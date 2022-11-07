@@ -15,8 +15,8 @@ class Ship(Actor):
         self._m_laser_cool_down: float = 0.0
 
         # Create components for Ship
-        sc = SpriteComponent(self, 150)
-        sc.set_texture(game.get_texture(b"assets/ship.png"))
+        self._m_sprite = SpriteComponent(self, 150)
+        self._m_sprite.set_texture(game.get_texture(b"assets/ship.png"))
 
         ic = InputMoveComponent(self)
         ic.set_forward_key(sdl2.SDL_SCANCODE_W)
@@ -42,3 +42,11 @@ class Ship(Actor):
 
             # Reset laser cooldown (1s)
             self._m_laser_cool_down = 1.0
+
+    def change_texture_to(self, kind: str) -> sdl2.SDL_Texture:
+        if kind == "forward":
+            self._m_sprite.set_texture(
+                self._m_game.get_texture(b"assets/ship_with_thrust.png"))
+        if kind == "backward":
+            self._m_sprite.set_texture(
+                self._m_game.get_texture(b"assets/ship.png"))
