@@ -8,10 +8,6 @@ This project is part of a book that I'm currently reading (see below for name of
 
 Python, and SDL2 (Simple Directmedia Layer) which is a low-level 2D/3D programming library similar to OpenGL. Additionally, for the organization of classes, a technique that mixes *hierarchy game object model* and *composition game object model* is applied. For movement, Newtonian physics is applied using a method called Velocity Verlet Integration.
 
-## Demonstration
-
-COMING SOON
-
 New classes added for this project are listed below.
 
 Components:
@@ -23,6 +19,10 @@ Game-specific Actors:
 - Ship
 - Asteroid
 - Laser
+
+## Demonstration
+
+COMING SOON
 
 Note: All source code for this game prototype can be found inside `.py` files.
 
