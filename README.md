@@ -6,23 +6,25 @@ This project is part of a book that I'm currently reading (see below for name of
 
 ## Technologies Used
 
-Python, and SDL2 (Simple Directmedia Layer) which is a low-level 2D/3D programming library similar to OpenGL. Additionally, for the organization of classes, a technique that mixes *hierarchy game object model* and *composition game object model* is applied. For movement, Newtonian physics is applied using a method called Velocity Verlet Integration.
+Python, and SDL2 (Simple Directmedia Layer) which is a low-level 2D/3D programming library similar to OpenGL. Additionally, for the organization of classes, a technique that mixes *hierarchy game object model* and *composition game object model* is applied. 
 
-New classes added for this project are listed below.
+For character movements, Newtonian physics is implemented using a technique called Velocity Verlet Integration.
 
-Components:
+New classes added for this project:
+
+Components
 - MoveComponent (for Newtonian physics)
 - InputComponent (for keyboard movement)
 - CircleComponent (for collision detection)
 
-Game-specific Actors:
+Game-specific Actors
 - Ship
 - Asteroid
 - Laser
 
 ## Demonstration
 
-COMING SOON
+![space_shooter](asteroid_game.gif)
 
 Note: All source code for this game prototype can be found inside `.py` files.
 
